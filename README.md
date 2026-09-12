@@ -14,7 +14,7 @@ A touch-first, native Android reimplementation inspired by **The Battle for Wesn
 
 ## Build
 
-Use Android Studio with JDK 17 and Android SDK 37, or Gradle 9.3+:
+Use Android Studio with JDK 17 and Android SDK 37, or Gradle 9.6+:
 
 ```bash
 gradle :app:assembleDebug
