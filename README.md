@@ -8,6 +8,14 @@ An unofficial, native Kotlin/Jetpack Compose Android reimplementation of The Bat
 
 Android 8.0 or newer. Open the APK from Downloads, allow your browser/file manager to install apps when prompted, then tap Install. If you installed 0.1.0, uninstall that earlier prototype first: CI development APKs use debug certificates and may not update in place. Uninstalling removes that prototype's local data.
 
+## Screenshots
+
+Actual captures from the tested Android APK:
+
+![Landscape battlefield with original Wesnoth sprites and touch controls](docs/screenshots/landscape.png)
+
+[Weapon selection preview](docs/screenshots/attack.png) · [All six test captures](https://github.com/kingdomoVuigeil/wesnoth-android/actions/runs/39019304194/artifacts/12096217022)
+
 ## Play
 
 - Choose **New battle**, a map, and **Vs computer** or **Pass & play**.
@@ -40,7 +48,9 @@ JDK 17, Android SDK 37, and the included Gradle 9.6 wrapper:
 
 Windows: use `gradlew.bat`. The APK is at `app/build/outputs/apk/debug/app-debug.apk`.
 
-The pure Kotlin `engine` module has deterministic JUnit coverage for movement, combat, recruiting, healing, income, save/load, AI and victory. Android instrumentation tests exercise path/attack previews, recruiting, save/load, orientation changes and an AI turn, and save screenshots for review. CI only publishes an APK after build, lint, engine tests and emulator tests pass.
+The pure Kotlin `engine` module has deterministic JUnit coverage for movement, combat, recruiting, healing, income, save/load, AI and victory. Android instrumentation tests exercise real onboarding, touch/zoom, path/attack previews, recruiting, save/load, orientation changes and an AI turn, and save screenshots for review. CI only publishes an APK after build, lint, engine tests and emulator tests pass.
+
+The [0.2.0 release validation](https://github.com/kingdomoVuigeil/wesnoth-android/actions/runs/39019304194) passed all **22 engine tests and 5 Android UI tests**, Android compilation, lint, and the 44-file asset integrity check. Screenshots above were captured in that run on Android 14. Physical-device testing and broader Android-version coverage are still pending.
 
 `python scripts/verify_assets.py` checks every bundled PNG against the provenance manifest. `scripts/fetch_assets.py` reproduces the import from a pinned upstream commit and validates the original copyright-table checksums.
 
