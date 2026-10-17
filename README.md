@@ -12,6 +12,20 @@ A touch-first, native Android reimplementation inspired by **The Battle for Wesn
 - Alternating turns and deterministic engine tests
 - Landscape layout designed for phones and tablets
 
+## Install on an Android phone
+
+Requires Android 8.0 or newer. Open this link on the phone:
+
+[Download the 0.1.0 prototype APK](https://github.com/kingdomoVuigeil/wesnoth-android/releases/download/v0.1.0-prototype/wesnoth-android-0.1.0.apk)
+
+1. Download the APK, then open it from Downloads.
+2. If prompted, allow the browser or file manager to install unknown apps.
+3. Tap **Install**, then **Open**. The app is called **Wesnoth Modern**.
+
+The [release page](https://github.com/kingdomoVuigeil/wesnoth-android/releases/tag/v0.1.0-prototype) includes the complete corresponding source and checksums. This is an early debug prototype with placeholder visuals and basic movement/combat. See the roadmap for the remaining game systems.
+
+CI uploads an installer for each successful build. The first prototype release is preserved; subsequent builds can be downloaded from their Actions run artifacts.
+
 ## Build
 
 Use Android Studio with JDK 17 and Android SDK 37, or Gradle 9.6+:
