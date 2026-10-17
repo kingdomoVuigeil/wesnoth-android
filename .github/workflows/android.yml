@@ -2,6 +2,9 @@ name: Android CI
 on:
   push:
   pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,3 +18,55 @@ jobs:
         with:
           gradle-version: '9.6.0'
       - run: gradle :app:testDebugUnitTest :app:assembleDebug --stacktrace
+      - name: Package Android installer and corresponding source
+        run: |
+          mkdir -p dist
+          cp app/build/outputs/apk/debug/app-debug.apk dist/wesnoth-android-0.1.0.apk
+          git archive --format=tar.gz --prefix=wesnoth-android-0.1.0/ HEAD > dist/wesnoth-android-0.1.0-source.tar.gz
+          cd dist
+          sha256sum wesnoth-android-0.1.0.apk wesnoth-android-0.1.0-source.tar.gz > SHA256SUMS
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: wesnoth-android-prototype
+          path: dist/
+          if-no-files-found: error
+          retention-days: 90
+  publish-prototype:
+    needs: build
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: prototype-release
+      cancel-in-progress: false
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: wesnoth-android-prototype
+          path: dist
+      - name: Publish the first installable prototype
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          SOURCE_COMMIT: ${{ github.sha }}
+        run: |
+          # Preserve this version once published. Later builds remain in Actions artifacts.
+          if gh release view v0.1.0-prototype >/dev/null 2>&1; then
+            exit 0
+          fi
+          cat > release-notes.md <<'NOTES'
+          First native Android prototype (Android 8.0 or newer).
+
+          Download wesnoth-android-0.1.0.apk on your phone, open it from Downloads, allow installation from that app when prompted, and tap Install.
+
+          Includes a hex map, unit movement, terrain defence, turn switching, and basic combat. This is an early debug build with placeholder visuals and a small subset of Wesnoth mechanics.
+
+          GPL-2.0-or-later. Complete corresponding source, build scripts, and license are provided in the source archive alongside the APK. SHA256SUMS contains file checksums.
+          NOTES
+          gh release create v0.1.0-prototype dist/* \
+            --target "$SOURCE_COMMIT" \
+            --title "Wesnoth Android 0.1.0 prototype" \
+            --prerelease \
+            --notes-file release-notes.md
