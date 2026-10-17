@@ -5,3 +5,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "WesnothModern"
 include(":app")
+include(":engine")

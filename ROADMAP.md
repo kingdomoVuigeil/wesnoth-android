@@ -1,43 +1,37 @@
 # Roadmap to Wesnoth compatibility
 
-“All mechanics” is treated as a testable compatibility program rather than a single milestone.
+## Implemented in 0.2
 
-## Phase 1 — playable foundation (current)
+- Native Compose UI with original sprites/terrain, movement and combat animation.
+- Portrait/landscape layouts, pan/zoom, accessible hexes and contextual unit details.
+- Path previews, confirmation, movement undo and weapon/retaliation previews.
+- Three skirmish maps, computer opponent and local pass-and-play.
+- Terrain/defence, zones of control, friendly traversal, alternating combat, resistance and alignment modifiers.
+- Villages, gold/upkeep, recruiting, healing, slow, leadership, XP and single-path advancement.
+- Deterministic saves including RNG state, autosave and manual save/load.
+- Independent engine tests, Android emulator smoke tests, screenshots, lint and asset checks.
 
-- [x] Native Compose shell and touch-first board
-- [x] Hex coordinates, terrain, weighted movement, turns, attacks, victory
-- [x] Pure Kotlin rules engine and deterministic tests
-- [ ] Correct cube rounding for taps, pan/zoom, responsive portrait layout
-- [ ] Save/load, recruit dialog, villages, gold and income
+## Next: deeper tactical parity
 
-## Phase 2 — core tactical parity
+- Unit-appropriate traits, advancement selection, recall and persistent campaign armies.
+- Complete unit profiles, abilities/specials and upstream rounding/edge-case comparison tests.
+- Fog, shroud, ambush, illumination, terrain composition and visibility-aware undo.
+- Better AI strategy, difficulty settings and performance profiling on real devices.
+- Full animation coverage, sound/music, clearer camera following and visual accessibility options.
+- Stable release signing and seamless APK upgrades.
 
-- Zones of control, alignment/time-of-day modifiers, resistances
-- Ranged/melee retaliation, weapon specials, poison, slow and healing
-- Experience, advancement, AMLA, traits and abilities
-- Fog, shroud, undo rules, recall and scenario objectives
-- Golden tests against documented upstream outcomes
+## Content compatibility
 
-## Phase 3 — content compatibility
+- Versioned WML parser/schema and a validated subset of scenario/event scripting.
+- Maps, factions, eras, campaigns and terrain graphics import.
+- Lua compatibility/security model and deterministic event execution.
+- First complete campaign with per-file license and provenance checks.
 
-- Versioned WML parser and schema
-- Terrain graphics composition and animation pipeline
-- Unit, faction, era, map and scenario importers
-- Per-file SPDX/provenance manifest for every imported asset
-- First complete GPL/CC-compliant campaign
+## Full game systems
 
-## Phase 4 — full game systems
+- Replay format, upstream save compatibility and scenario persistence.
+- Multiplayer protocol/service integration and sync checks.
+- Add-on management, map editor, localization, TalkBack review and controller support.
+- Reproducible signed release builds, F-Droid metadata and store packaging.
 
-- Deterministic AI, replay format and hot-seat multiplayer
-- Campaign persistence, Lua/WML events and add-on sandbox
-- Network protocol research and multiplayer service
-- Map editor, add-on manager, localization and accessibility
-
-## Phase 5 — release quality
-
-- Performance profiles on low/mid/high-tier Android devices
-- Foldable/tablet layouts, TalkBack, keyboard/controller support
-- Signed reproducible builds, F-Droid metadata and Play packaging
-- Compatibility matrix against the supported upstream Wesnoth release
-
-Each phase requires automated engine tests, UI smoke tests, license audit, and a playable APK before it is considered complete.
+Each major addition must include appropriate engine/UI verification and a playable APK. Full compatibility is not implied until documented upstream comparison tests demonstrate it.

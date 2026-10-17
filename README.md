@@ -1,50 +1,55 @@
-# Wesnoth Android
+# Wesnoth Android: Frontiers
 
-A touch-first, native Android reimplementation inspired by **The Battle for Wesnoth**. This repository is an early playable vertical slice, not yet a drop-in replacement for the upstream game.
+An unofficial, native Kotlin/Jetpack Compose Android reimplementation of The Battle for Wesnoth. Version 0.2 adds a substantial offline skirmish game and a sprite-based touch interface.
 
-## What runs today
+## Install
 
-- Native Kotlin and Jetpack Compose interface
-- Axial hex map with terrain
-- Unit selection and highlighted movement range
-- Terrain-weighted pathfinding and movement points
-- Adjacent combat with terrain defence, strikes, HP, death, and victory
-- Alternating turns and deterministic engine tests
-- Landscape layout designed for phones and tablets
+[Download the 0.2.0 APK](https://github.com/kingdomoVuigeil/wesnoth-android/releases/download/v0.2.0-prototype/wesnoth-android-0.2.0.apk) · [Release notes and source](https://github.com/kingdomoVuigeil/wesnoth-android/releases/tag/v0.2.0-prototype)
 
-## Install on an Android phone
+Android 8.0 or newer. Open the APK from Downloads, allow your browser/file manager to install apps when prompted, then tap Install. If you installed 0.1.0, uninstall that earlier prototype first: CI development APKs use debug certificates and may not update in place. Uninstalling removes that prototype's local data.
 
-Requires Android 8.0 or newer. Open this link on the phone:
+## Play
 
-[Download the 0.1.0 prototype APK](https://github.com/kingdomoVuigeil/wesnoth-android/releases/download/v0.1.0-prototype/wesnoth-android-0.1.0.apk)
+- Choose **New battle**, a map, and **Vs computer** or **Pass & play**.
+- Tap a blue unit. Gold hexes show its movement range. Tap a destination to preview the path, then **Confirm move**. **Undo** reverses the last movement until another action commits it.
+- Tap an adjacent enemy to compare weapons, hit chances and retaliation before attacking.
+- Keep your captain on the keep to **Recruit** on vacant connected castle hexes.
+- Capture villages for income and healing, protect your leader, and defeat the enemy leader within 30 rounds.
+- Drag/pinch the map or use **+ / − / Fit**. **Next unit** finds another available ally.
+- Progress autosaves after actions; **Menu** has manual save/load, the field guide and licenses.
 
-1. Download the APK, then open it from Downloads.
-2. If prompted, allow the browser or file manager to install unknown apps.
-3. Tap **Install**, then **Open**. The app is called **Wesnoth Modern**.
+## Included in 0.2
 
-The [release page](https://github.com/kingdomoVuigeil/wesnoth-android/releases/tag/v0.1.0-prototype) includes the complete corresponding source and checksums. This is an early debug prototype with placeholder visuals and basic movement/combat. See the roadmap for the remaining game systems.
+- 44 original Wesnoth sprites, animation frames and terrain textures, all bundled offline.
+- Three skirmish maps, a deterministic tactical AI, and local pass-and-play.
+- Terrain costs, unit-specific defence, friendly-unit traversal, zones of control, village capture and movement undo.
+- Alternating strikes, matched-range retaliation, six damage types, resistances, time-of-day alignment, leadership and slow.
+- Gold, village income, level-based upkeep, recruiting, healing/rest, XP and automatic single-path advancement.
+- Movement and combat animation, health bars, team markers, leader crowns, accessible hex descriptions and responsive portrait/landscape layouts.
+- Versioned saves including random state; no network permission, accounts, ads or runtime asset downloads.
 
-CI uploads an installer for each successful build. The first prototype release is preserved; subsequent builds can be downloaded from their Actions run artifacts.
+## Build and test
 
-## Build
-
-Use Android Studio with JDK 17 and Android SDK 37, or Gradle 9.6+:
+JDK 17, Android SDK 37, and the included Gradle 9.6 wrapper:
 
 ```bash
-gradle :app:assembleDebug
-gradle :app:testDebugUnitTest
+./gradlew :engine:test
+./gradlew :app:assembleDebug :app:assembleDebugAndroidTest :app:lintDebug
+./gradlew :app:connectedDebugAndroidTest
 ```
 
-The debug APK is written to `app/build/outputs/apk/debug/app-debug.apk`.
+Windows: use `gradlew.bat`. The APK is at `app/build/outputs/apk/debug/app-debug.apk`.
 
-## Project principles
+The pure Kotlin `engine` module has deterministic JUnit coverage for movement, combat, recruiting, healing, income, save/load, AI and victory. Android instrumentation tests exercise path/attack previews, recruiting, save/load, orientation changes and an AI turn, and save screenshots for review. CI only publishes an APK after build, lint, engine tests and emulator tests pass.
 
-The rules engine lives outside the UI layer, stays deterministic under a seeded random source, and will remain data-driven. Imported upstream content must include provenance and its original license metadata.
+`python scripts/verify_assets.py` checks every bundled PNG against the provenance manifest. `scripts/fetch_assets.py` reproduces the import from a pinned upstream commit and validates the original copyright-table checksums.
 
-See [ROADMAP.md](ROADMAP.md) for the staged parity plan and [NOTICE.md](NOTICE.md) for licensing guidance.
+## Limits and next steps
 
-## License
+This is still an early reimplementation. It does not yet load upstream WML/Lua campaigns, add-ons, network games, saved games or replays. Traits, advancement choice, full ability/special coverage, ambush/fog/shroud and full upstream rules parity remain on the [roadmap](ROADMAP.md). The current unit roster and scenarios are a deliberately small, tested slice.
 
-Copyright (C) 2026 Domokos Kovacs and contributors.
+## Licensing
 
-Licensed under GNU GPL version 2 or (at your option) any later version. See [LICENSE](LICENSE). “The Battle for Wesnoth” and upstream content belong to their respective owners. This prototype currently contains no copied upstream art, music, campaign text, or code.
+New code: copyright (C) 2026 Domokos Kovacs and contributors, GNU GPL v2 or later. See [LICENSE](LICENSE).
+
+Original art and adapted numeric unit data come from Wesnoth 1.18.6, commit 1a2f96ab86808b94a34337502cfae86d94eb43d1. Art retains its individual GPL-2.0-or-later or CC-BY-SA-4.0 license and author credit. See [NOTICE.md](NOTICE.md) and [the exact asset manifest](app/src/main/assets/asset-provenance.json). Both full license texts are bundled in the app; each APK release includes complete corresponding source and build scripts.
