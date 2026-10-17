@@ -3,7 +3,6 @@ package io.github.kingdomovuigeil.wesnothmodern
 
 import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
-import androidx.activity.compose.setContent
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -11,7 +10,6 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.github.kingdomovuigeil.wesnothmodern.game.*
 import io.github.kingdomovuigeil.wesnothmodern.ui.BattleStore
-import io.github.kingdomovuigeil.wesnothmodern.ui.WesnothApp
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
@@ -21,10 +19,11 @@ import java.io.File
 @RunWith(AndroidJUnit4::class)
 class BattleUiTest {
     @get:Rule val compose = createAndroidComposeRule<MainActivity>()
-    private fun start(ai: Boolean = false) {
-        compose.activityRule.scenario.onActivity { activity ->
-            activity.setContent { WesnothApp(newGame("patrol", ai, seed = 1)) }
-        }
+    private fun start(ai: Boolean = false, scenario: String = "patrol") {
+        compose.onNodeWithText("New battle").performClick()
+        compose.onNodeWithTag("scenario-$scenario").performScrollTo().performClick()
+        if (!ai) compose.onNodeWithText("Pass & play").performClick()
+        compose.onNodeWithTag("start-battle").performClick()
         compose.waitForIdle()
     }
     private fun hex(column: Int, row: Int) {
@@ -99,5 +98,18 @@ class BattleUiTest {
         compose.waitUntil(30_000) { store.load()?.let { it.turn == 2 && it.currentSide == 1 || it.winner != null } == true }
         assertTrue(store.load()!!.units.none { it.hp <= 0 })
         screenshot("05-after-computer-turn")
+    }
+
+    @Test fun fullBattlefieldRespondsToTouchAndZoom() {
+        start(scenario = "crossing")
+        compose.onNodeWithTag("fit-map").performClick()
+        screenshot("06-greenford-crossing")
+        val h = Hex.at(2, 4)
+        compose.onNodeWithTag("hex-${h.q}-${h.r}", true).performTouchInput { click(center) }
+        compose.mainClock.advanceTimeBy(400)
+        compose.onNodeWithText("Elvish Fighter").assertIsDisplayed()
+        compose.onNodeWithTag("battlefield").performTouchInput { pinch(center, center + androidx.compose.ui.geometry.Offset(80f, 80f), center - androidx.compose.ui.geometry.Offset(80f, 80f), center + androidx.compose.ui.geometry.Offset(160f, 160f)) }
+        compose.onNodeWithTag("fit-map").performClick()
+        compose.onNodeWithTag("end-turn").assertIsDisplayed()
     }
 }

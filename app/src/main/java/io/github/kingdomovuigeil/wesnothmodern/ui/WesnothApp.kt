@@ -241,7 +241,7 @@ import kotlinx.coroutines.withContext
                     SmallButton("Confirm move", onMove, Modifier.testTag("confirm-move"), primary = true)
                 }
             } else Text(notice ?: if (unit != null && short) "${unit.type.name}  ${unit.hp}/${unit.type.maxHp} HP · ${unit.moves} MP" else
-                if (state.selected == null) "Tap a blue unit to see where it can move." else state.message,
+                if (state.selected == null) "Tap a ${if (state.currentSide == 1) "blue" else "red"} unit to see where it can move." else state.message,
                 Modifier.fillMaxWidth().background(Panel).padding(horizontal = 14.dp, vertical = 5.dp),
                 color = if (notice != null) Gold else Muted, fontSize = 11.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Row(Modifier.fillMaxWidth().background(Night).padding(horizontal = 8.dp, vertical = 4.dp),

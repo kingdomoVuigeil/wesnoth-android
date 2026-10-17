@@ -81,11 +81,11 @@ import org.json.JSONObject
             Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Sprite(attacker.type.sprite, null, art, side = attacker.side); Text("${attacker.hp} HP", color = Blue, fontSize = 12.sp)
+                        Sprite(attacker.type.sprite, null, art, side = attacker.side); Text("${attacker.hp} HP", color = if (attacker.side == 1) Blue else Red, fontSize = 12.sp)
                     }
                     Text("VS", color = Muted, fontWeight = FontWeight.Bold)
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Sprite(defender.type.sprite, null, art, side = defender.side); Text("${defender.hp} HP", color = Red, fontSize = 12.sp)
+                        Sprite(defender.type.sprite, null, art, side = defender.side); Text("${defender.hp} HP", color = if (defender.side == 1) Blue else Red, fontSize = 12.sp)
                     }
                 }
                 Text("${attacker.type.name} against ${defender.type.name}", fontSize = 12.sp)
