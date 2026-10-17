@@ -8,14 +8,17 @@ import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.github.kingdomovuigeil.wesnothmodern.game.*
 import io.github.kingdomovuigeil.wesnothmodern.ui.BattleStore
 import io.github.kingdomovuigeil.wesnothmodern.ui.WesnothApp
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import java.io.File
 
+@RunWith(AndroidJUnit4::class)
 class BattleUiTest {
     @get:Rule val compose = createAndroidComposeRule<MainActivity>()
     private fun start(ai: Boolean = false) {

@@ -191,6 +191,7 @@ import kotlinx.coroutines.withContext
     BoxWithConstraints(Modifier.fillMaxSize()) {
         val wide = maxWidth >= 840.dp
         val short = maxHeight < 440.dp
+        val compactControls = short || maxWidth < 440.dp
         val unit = inspected?.let(state::at) ?: state.selectedUnit
         Column(Modifier.fillMaxSize()) {
             Row(Modifier.fillMaxWidth().background(Panel).padding(horizontal = 10.dp, vertical = 4.dp),
@@ -246,7 +247,7 @@ import kotlinx.coroutines.withContext
             Row(Modifier.fillMaxWidth().background(Night).padding(horizontal = 8.dp, vertical = 4.dp),
                 verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 SmallButton("Undo", onUndo, enabled = !blocked && state.undo != null && state.winner == null)
-                SmallButton(if (short || maxWidth < 440.dp) "Next" else "Next unit", onNext, enabled = !blocked && state.winner == null)
+                SmallButton(if (compactControls) "Next" else "Next unit", onNext, enabled = !blocked && state.winner == null)
                 Spacer(Modifier.weight(1f))
                 SmallButton("Recruit", onRecruit, Modifier.testTag("recruit"), enabled = !blocked && state.winner == null)
                 SmallButton("End turn", onEnd, Modifier.testTag("end-turn"), enabled = !blocked && state.winner == null, primary = true)
