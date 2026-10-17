@@ -73,9 +73,14 @@ jobs:
       - name: Exercise the actual APK in an Android emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 35
+          api-level: 34
+          target: google_apis
           arch: x86_64
           profile: pixel_6
+          ram-size: 1536M
+          disk-size: 2048M
+          emulator-boot-timeout: 180
+          emulator-options: -no-window -gpu swiftshader -no-snapshot -noaudio -no-boot-anim -camera-back none -camera-front none -feature -Vulkan
           disable-animations: true
           script: bash scripts/ui_smoke.sh
       - uses: actions/upload-artifact@v4
